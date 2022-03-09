@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.ssafy.happyhouse.model.mapper.MemoMapper">
+
+	<insert id="writeQnAMemo" parameterType="memoDto">
+		insert into qnamemo (user_id, comment, memotime, articleno)
+		values (#{user_id}, #{comment}, now(), #{articleno})
+	</insert>
+	
+	<insert id="writeNoticeMemo" parameterType="memoDto">
+		insert into noticememo (user_id, comment, memotime, articleno)
+		values (#{user_id}, #{comment}, now(), #{articleno})
+	</insert>
+	
+	<select id="listQnAMemo" parameterType="int" resultType="memoDto">
+		select g.memono, g.user_id, g.comment, g.memotime, g.articleno, s.user_name
+		from qnamemo AS g
+		join user AS s
+		on s.user_id = g.user_id
+		where articleno = ${articleno}
+		order by memono desc
+	</select>
+	
+	<select id="listNoticeMemo" parameterType="int" resultType="memoDto">
+		select g.memono, g.user_id, g.comment, g.memotime, g.articleno, s.user_name
+		from noticememo as g
+		join user as s
+		on s.user_id = g.user_id
+		where articleno = ${articleno}
+		order by memono desc
+	</select>
+	
+	<delete id="deleteQnAMemo" parameterType="int">
+		delete from qnamemo
+		where memono = #{memono}
+	</delete>
+
+	<delete id="deleteNoticeMemo" parameterType="int">
+		delete from noticememo
+		where memono = #{memono}
+	</delete>
+	
+</mapper>

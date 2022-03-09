@@ -1,0 +1,30 @@
+.info-container {
+  height: 500rem;
+  margin-top: 100px;
+}
+
+.area {
+  font-weight: 600;
+  font-size: 30px;
+  letter-spacing: -2px;
+}
+
+.info-table {
+  font-size: 17px;
+  letter-spacing: -1px;
+}
+
+tr {
+  height: 50px;
+}
+
+.desc {
+  letter-spacing: -1px;
+}
+
+td {
+  transition: 0.3s;
+}
+td:hover {
+  background-color: mintcream;
+}

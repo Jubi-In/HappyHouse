@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+	<mapper namespace="com.ssafy.happyhouse.model.mapper.FavoriteMapper">
+	
+	<!-- 조회 -->
+	<select id="getFavoriteList" parameterType="string" resultType="favoriteDto">
+	select left(sidoCode, 2), left(gugunCode, 5),  f.sidoCode, f.gugunCode, user_id, (select sidoName from sidoCode where sidoCode = f.sidoCode) sidoName, (select gugunName from guguncode where guguncode = f.guguncode) gugunName
+	from favorite f
+	where user_id = #{user_id}
+	</select>
+	
+	<!-- 등록 -->
+	<insert id="registerFavorite" parameterType="FavoriteDto">
+		insert into favorite (sidoCode, gugunCode, user_id)
+		values (#{sidoCode}, #{gugunCode}, #{user_id})
+	</insert>
+	
+	<!-- 등록한 지역인지 체크 -->
+	<select id="favCheck" parameterType="string" resultType="int">
+		select count(sidoCode)
+		from favorite
+		where user_id = #{user_id} and sidoCode = #{sidoCode} and gugunCode= #{gugunCode};
+	</select>
+	
+	<!-- 관심지역 해제 -->
+	<delete id="deleteFav" parameterType="string">
+	delete from favorite
+	where user_id = #{user_id} and sidoCode = #{sidoCode} and gugunCode= #{gugunCode};
+	</delete>
+	</mapper>

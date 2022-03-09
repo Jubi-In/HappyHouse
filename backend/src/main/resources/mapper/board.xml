@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.ssafy.happyhouse.model.mapper.BoardMapper">
+
+	<insert id="writeQnA" parameterType="boardDto">
+		insert into qnaboard (user_id, subject, content, hit, regtime)
+		values (#{user_id}, #{subject}, #{content}, 0, now())
+	</insert>
+	
+	<insert id="writeNotice" parameterType="boardDto">
+		insert into noticeboard (user_id, subject, content, hit, regtime)
+		values (#{user_id}, #{subject}, #{content}, 0, now())
+	</insert>
+	
+	<select id="listQnA" parameterType="map" resultType="boardDto">
+		select g.articleno, g.user_id, g.subject, g.content, g.hit, DATE_FORMAT(regtime, '%y-%m-%d') as regtime, s.user_name
+		from qnaboard AS g
+		join user AS s
+		on s.user_id = g.user_id
+		order by articleno desc
+		limit #{start}, #{spp}
+	</select>
+	
+	<select id="listNotice" parameterType="map" resultType="boardDto">
+		select g.articleno, g.user_id, g.subject, g.content, g.hit, DATE_FORMAT(regtime, '%y-%m-%d') as regtime, s.user_name
+		from noticeboard AS g
+		join user AS s
+		on s.user_id = g.user_id
+		order by articleno desc
+		limit #{start}, #{spp}
+	</select>
+	
+	<select id="getQnA" parameterType="int" resultType="boardDto">
+		select articleno, user_id, subject, content, hit, regtime
+		from qnaboard
+		where articleno = #{articleno}
+	</select>
+	
+	<select id="getNotice" parameterType="int" resultType="boardDto">
+		select articleno, user_id, subject, content, hit, regtime
+		from noticeboard
+		where articleno = #{articleno}
+	</select>
+	
+	<update id="updateQnAHit" parameterType="int">
+		update qnaboard
+		set hit = hit + 1
+		where articleno = #{articleno}
+	</update>
+	
+	<update id="updateNoticeHit" parameterType="int">
+		update noticeboard
+		set hit = hit + 1
+		where articleno = #{articleno}
+	</update>
+	
+	<delete id="deleteQnAMemo" parameterType="int">
+		delete from qnamemo
+		where articleno = #{articleno}
+	</delete>
+	
+	<delete id="deleteQnA" parameterType="int">
+		delete from qnaboard
+		where articleno = #{articleno}
+	</delete>
+	
+	<delete id="deleteNoticeMemo" parameterType="int">
+		delete from noticememo
+		where articleno = #{articleno}
+	</delete>
+	
+	<delete id="deleteNotice" parameterType="int">
+		delete from noticeboard
+		where articleno = #{articleno}
+	</delete>
+	
+	<update id="modifyQnA" parameterType="boardDto">
+		update qnaboard
+		set subject = #{subject}, content = #{content}
+		where articleno = #{articleno}
+	</update>
+	
+	<update id="modifyNotice" parameterType="boardDto">
+		update noticeboard
+		set subject = #{subject}, content = #{content}
+		where articleno = #{articleno}
+	</update>
+	
+
+</mapper>

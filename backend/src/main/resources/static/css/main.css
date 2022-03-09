@@ -1,0 +1,14 @@
+.main-container {
+  height: 300rem;
+  margin-top: 200px;
+}
+
+.dropdown-menu {
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+.info-link {
+  font-size: 20px;
+  color: black;
+}

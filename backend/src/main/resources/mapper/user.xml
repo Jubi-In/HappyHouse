@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.ssafy.happyhouse.model.mapper.UserMapper">
+
+<!-- 	2021.11.18 한길 수정 :: 로그인 -->
+	<select id="login" parameterType="UserDto" resultType="UserDto">
+		select user_name, user_id, user_email, user_pw, user_tel, user_address
+		from user
+		where user_id = #{user_id} and user_pw = #{user_pw}
+	</select>
+	
+<!-- 	2021.11.18 한길 추가 :: 로그인, token비교 -->
+	<select id="userInfo" parameterType="String" resultType="UserDto">
+		select user_id, user_pw, user_name, user_address, user_email, user_tel
+		from user
+		where user_id = #{user_id}
+	</select>
+
+<!-- 	2021.11.19 한길 추가 :: 회원정보 등록 -->
+	<insert id="registerMember" parameterType="UserDto">
+		insert into user (user_id, user_pw, user_name, user_address, user_email, user_tel)
+		values (#{user_id}, #{user_pw}, #{user_name}, #{user_address}, #{user_email}, #{user_tel})
+	</insert>
+
+<!-- 	2021.11.21 한길 추가 :: 회원탈퇴 -->
+	<delete id="deleteUser" parameterType="string">
+		delete from user
+		where user_id = #{user_id}
+	</delete>
+	
+<!-- 	2021.11.23 한길 수정 -->
+	<select id="idCheck" parameterType="string" resultType="int">
+		select count(user_id)
+		from user
+		where user_id = #{user_id} 
+	</select>
+	
+	
+	<update id="updateUser" parameterType="UserDto">
+		update user
+		<trim prefix="set" suffixOverrides=",">
+			<if test="user_name != null">user_name = #{user_name},</if>
+			<if test="user_pw != null">user_pw = #{user_pw},</if>
+			<if test="user_email != null">user_email = #{user_email},</if>
+			<if test="user_tel != null">user_tel = #{user_tel},</if>
+			<if test="user_address != null">user_address = #{user_address},</if>
+		</trim>
+		where user_id = #{user_id}
+	</update>
+	
+	
+
+</mapper>	
+
+<!--    int idCheck(String id) throws SQLException; // 아이디 체크 -->
+<!-- 	void registerMember(UserDto userDto) throws SQLException; // 회원등록 -->
+<!-- 	UserDto login(String id, String pass) throws SQLException; // 로그인 -->
+<!-- 	UserDto searchUser(String id) throws SQLException; -->
+<!-- 	void updateUser(UserDto userDto) throws SQLException; -->
+<!-- 	void deleteUser(String id) throws SQLException; -->
